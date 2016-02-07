@@ -3985,6 +3985,11 @@ void                 Compiler::compCompile(void * * methodCodePtr,
 
     codeGen->genGenerateCode(methodCodePtr, methodCodeSize);
 
+    // Lubo
+    // Lubo printf("Lubo2: ---> %s:%s %p %p\n",
+    // Lubo    info.compClassName, info.compMethodName, (methodCodePtr == nullptr ? 0 : *methodCodePtr),
+    // Lubo    (methodCodeSize == nullptr ? 0 : *methodCodeSize));
+    // Lubo end
 #ifdef FEATURE_JIT_METHOD_PERF
     if (pCompJitTimer) 
         pCompJitTimer->Terminate(this, CompTimeSummaryInfo::s_compTimeSummary);
@@ -5021,7 +5026,11 @@ int           Compiler::compCompileHelper (CORINFO_MODULE_HANDLE            clas
         compCompile(methodCodePtr,
                     methodCodeSize,
                     compileFlags);
-
+// Lubo
+// Lubo printf("Lubo1: ---> %s:%s %p %p\n",
+// Lubo            info.compClassName, info.compMethodName, methodCodePtr == nullptr ? 0 : *methodCodePtr,
+// Lubo            methodCodeSize == nullptr ? 0 : *methodCodeSize);
+// Lubo end
 #ifdef  DEBUG
         if (compIsForInlining())
         {

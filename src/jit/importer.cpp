@@ -14014,8 +14014,10 @@ bool Compiler::impReturnInstruction(BasicBlock *block, int prefixFlags, OPCODE &
 
         op2 = impAssignStructPtr(retBuffAddr, op2, retClsHnd, (unsigned)CHECK_SPILL_ALL);
         impAppendTree(op2, (unsigned)CHECK_SPILL_NONE, impCurStmtOffs);
-        if (compIsProfilerHookNeeded())
+
+        if (FEATURE_UNIX_AMD64_STRUCT_PASSING_ONLY(true || ) compIsProfilerHookNeeded())
         {
+            // System V ABI requires to return the implicit return buffer in rax.
             // The profiler callback expects the address of the return buffer in eax
             op1 = gtNewOperNode(GT_RETURN, TYP_BYREF, gtNewLclvNode(info.compRetBuffArg, TYP_BYREF));
         }

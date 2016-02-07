@@ -2969,7 +2969,11 @@ emitter::instrDesc  * emitter::emitNewInstrCallInd(int        argCnt,
                                                    VARSET_VALARG_TP GCvars,
                                                    regMaskTP  gcrefRegs,
                                                    regMaskTP  byrefRegs,
-                                                   emitAttr   retSizeIn)
+                                                   emitAttr   retSizeIn// Lubo, 
+// Lubo
+                                                   FEATURE_UNIX_AMD64_STRUCT_PASSING_ONLY_ARG(emitAttr retSize1In)
+// Lubo end
+    )
 {
     emitAttr  retSize = retSizeIn ? EA_ATTR(retSizeIn) : EA_PTRSIZE;
 
@@ -2986,7 +2990,10 @@ emitter::instrDesc  * emitter::emitNewInstrCallInd(int        argCnt,
          (disp < AM_DISP_MIN)        ||   // displacement too negative
          (disp > AM_DISP_MAX)        ||   // displacement too positive
          (argCnt > ID_MAX_SMALL_CNS) ||   // too many args
-         (argCnt < 0)                   ) // caller pops arguments
+         (argCnt < 0)                     // caller pops arguments
+// Lubo
+        FEATURE_UNIX_AMD64_STRUCT_PASSING_ONLY(|| (retSize1In != EA_UNKNOWN)) ) // There is a second ref/byref return register.
+// Lubo end         ()
     {
         instrDescCGCA* id;
 
@@ -2999,6 +3006,22 @@ emitter::instrDesc  * emitter::emitNewInstrCallInd(int        argCnt,
         id->idcByrefRegs      = byrefRegs;
         id->idcArgCnt         = argCnt;
         id->idcDisp           = disp;
+        // Lubo
+#if defined(FEATURE_UNIX_AMD64_STRUCT_PASSING)
+        if (EA_IS_GCREF(retSize1In))
+        {
+            id->idSecondRetRegGCType = GCT_GCREF;
+        }
+        else if (EA_IS_BYREF(retSize1In))
+        {
+            id->idSecondRetRegGCType = GCT_BYREF;
+        }
+        else
+        {
+            id->idSecondRetRegGCType = GCT_NONE;
+        }
+#endif // defined(FEATURE_UNIX_AMD64_STRUCT_PASSING)
+        // Lubo end
 
         return  id;
     }
@@ -3037,7 +3060,11 @@ emitter::instrDesc *emitter::emitNewInstrCallDir(int        argCnt,
                                                  VARSET_VALARG_TP GCvars,
                                                  regMaskTP  gcrefRegs,
                                                  regMaskTP  byrefRegs,
-                                                 emitAttr   retSizeIn)
+                                                 emitAttr   retSizeIn// Lubo, 
+// Lubo
+                                                 FEATURE_UNIX_AMD64_STRUCT_PASSING_ONLY_ARG(emitAttr retSize1In)
+// Lubo end
+        ) // Lubo
 {
     emitAttr       retSize = retSizeIn ? EA_ATTR(retSizeIn) : EA_PTRSIZE;
 
@@ -3052,7 +3079,10 @@ emitter::instrDesc *emitter::emitNewInstrCallDir(int        argCnt,
          gcRefRegsInScratch          ||   // any register gc refs live in scratch regs
          (byrefRegs != 0)            ||   // any register byrefs live
          (argCnt > ID_MAX_SMALL_CNS) ||   // too many args
-         (argCnt < 0)                   ) // caller pops arguments
+         (argCnt < 0)                     // caller pops arguments
+// Lubo
+         FEATURE_UNIX_AMD64_STRUCT_PASSING_ONLY(|| (retSize1In != EA_UNKNOWN))) // There is a second ref/byref return register.
+// Lubo end         ()   ) // caller pops arguments
     {
         instrDescCGCA* id = emitAllocInstrCGCA(retSize);
 
@@ -3065,7 +3095,22 @@ emitter::instrDesc *emitter::emitNewInstrCallDir(int        argCnt,
         id->idcByrefRegs      = byrefRegs;
         id->idcDisp           = 0;  
         id->idcArgCnt         = argCnt;
-
+        // Lubo
+#if defined(FEATURE_UNIX_AMD64_STRUCT_PASSING)
+        if (EA_IS_GCREF(retSize1In))
+        {
+            id->idSecondRetRegGCType = GCT_GCREF;
+        }
+        else if (EA_IS_BYREF(retSize1In))
+        {
+            id->idSecondRetRegGCType = GCT_BYREF;
+        }
+        else
+        {
+            id->idSecondRetRegGCType = GCT_NONE;
+        }
+#endif // defined(FEATURE_UNIX_AMD64_STRUCT_PASSING)
+        // Lubo end
         return  id;
     }
     else

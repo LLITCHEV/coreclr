@@ -313,10 +313,27 @@ void Lowering::TreeNodeInfoInit(GenTree* stmt)
                         // the values in the right registers for return.
                         info->srcCount = (tree->TypeGet() == TYP_VOID) ? 0 : 1;
                         info->dstCount = 0;
-                        MakeSrcContained(tree, tree->gtOp.gtOp1);
+                        MakeSrcContained(tree, tree->gtOp.gtOp1); // Lubo 
                         break;
                     }
+// Lubo
+/* Lubo
+                    else 
+                    {
+                        assert(tree->gtOp.gtOp1->OperGet() == GT_CALL);
+                        // If this is a two eightbyte return, make the var
+                        // contained by the return expression. The code gen will put
+                        // the values in the right registers for return.
+                        info->srcCount = (tree->TypeGet() == TYP_VOID) ? 0 : 1;
+                        info->dstCount = 0;
+                        MakeSrcContained(tree, tree->gtOp.gtOp1); // Lubo 
+                    }
 
+                    // set sued registers
+
+                    break;
+Lubo end */
+//Lubo end
                     // If the return gtOp1 is GT_CALL, just fallthrough. The return registers should already be set properly by the GT_CALL.
                 }
 #endif // FEATURE_UNIX_AMD64_STRUCT_PASSING

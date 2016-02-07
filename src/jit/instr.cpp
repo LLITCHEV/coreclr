@@ -1204,7 +1204,11 @@ void                CodeGen::sched_AM(instruction  ins,
 
 void                CodeGen::instEmit_indCall(GenTreePtr   call,
                                               size_t       argSize,
-                                              emitAttr     retSize)
+                                              emitAttr     retSize
+// Lubo
+                          FEATURE_UNIX_AMD64_STRUCT_PASSING_ONLY_ARG(emitAttr retSize1)
+    // Lubo end
+    )
 {
     GenTreePtr              addr;
 
@@ -1246,7 +1250,10 @@ void                CodeGen::instEmit_indCall(GenTreePtr   call,
                                       INDEBUG_LDISASM_COMMA(sigInfo)
                                       (void*) funcPtr,
                                       argSize,
-                                      retSize,
+                                      retSize// Lubo, 
+// Lubo
+                          FEATURE_UNIX_AMD64_STRUCT_PASSING_ONLY_ARG(retSize1),
+                // Lubo end
                                       gcInfo.gcVarPtrSetCur,
                                       gcInfo.gcRegGCrefSetCur,
                                       gcInfo.gcRegByrefSetCur);
@@ -1307,7 +1314,10 @@ void                CodeGen::instEmit_indCall(GenTreePtr   call,
                                           INDEBUG_LDISASM_COMMA(sigInfo)
                                           (void*) funcPtr,
                                           argSize,
-                                          retSize,
+                                          retSize// Lubo, 
+// Lubo
+                          FEATURE_UNIX_AMD64_STRUCT_PASSING_ONLY_ARG(retSize1),
+                    // Lubo end
                                           gcInfo.gcVarPtrSetCur,
                                           gcInfo.gcRegGCrefSetCur,
                                           gcInfo.gcRegByrefSetCur);
@@ -1370,8 +1380,11 @@ void                CodeGen::instEmit_indCall(GenTreePtr   call,
                               NULL,   // methHnd
                               INDEBUG_LDISASM_COMMA(sigInfo)
                               NULL,                 // addr
-                              argSize,
-                              retSize,
+                              argSize, 
+                              retSize// Lubo, 
+// Lubo
+                          FEATURE_UNIX_AMD64_STRUCT_PASSING_ONLY_ARG(retSize1),
+        // Lubo end
                               gcInfo.gcVarPtrSetCur,
                               gcInfo.gcRegGCrefSetCur,
                               gcInfo.gcRegByrefSetCur,

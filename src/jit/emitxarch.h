@@ -167,14 +167,22 @@ private:
                                          VARSET_VALARG_TP GCvars,
                                          regMaskTP  gcrefRegs,
                                          regMaskTP  byrefRegs,
-                                         emitAttr   retSize);
+                                         emitAttr   retSize// Lubo, 
+// Lubo
+                                                   FEATURE_UNIX_AMD64_STRUCT_PASSING_ONLY_ARG(emitAttr retSize1In)
+        // Lubo end
+        );
 
     instrDesc      *emitNewInstrCallInd( int        argCnt,
                                          ssize_t    disp,
                                          VARSET_VALARG_TP GCvars,
                                          regMaskTP  gcrefRegs,
                                          regMaskTP  byrefRegs,
-                                         emitAttr   retSize);
+                                         emitAttr   retSize// Lubo, 
+// Lubo
+                                                   FEATURE_UNIX_AMD64_STRUCT_PASSING_ONLY_ARG(emitAttr retSize1In)
+        // Lubo end
+        );
 
     void            emitGetInsCns   (instrDesc *id, CnsVal *cv);
     ssize_t         emitGetInsAmdCns(instrDesc *id, CnsVal *cv);
@@ -468,7 +476,11 @@ public:
                                     CORINFO_SIG_INFO* sigInfo,     // used to report call sites to the EE
                                     void*           addr,
                                     ssize_t         argSize,
-                                    emitAttr        retSize,
+                                    emitAttr        retSize// Lubo ,
+        // Lubo
+                                                   FEATURE_UNIX_AMD64_STRUCT_PASSING_ONLY_ARG(emitAttr retSize1),
+        // Lubo end
+
                                     VARSET_VALARG_TP ptrVars,
                                     regMaskTP       gcrefRegs,
                                     regMaskTP       byrefRegs,
@@ -481,7 +493,10 @@ public:
                                     INDEBUG_LDISASM_COMMA(CORINFO_SIG_INFO* sigInfo)     // used to report call sites to the EE
                                     void*           addr,
                                     ssize_t         argSize,
-                                    emitAttr        retSize,
+                                    emitAttr        retSize// Lubo ,
+        // Lubo
+                                                   FEATURE_UNIX_AMD64_STRUCT_PASSING_ONLY_ARG(emitAttr retSize1),
+        // Lubo end 
                                     VARSET_VALARG_TP ptrVars,
                                     regMaskTP       gcrefRegs,
                                     regMaskTP       byrefRegs,

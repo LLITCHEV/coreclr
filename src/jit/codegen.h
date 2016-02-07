@@ -251,7 +251,7 @@ protected:
 #ifndef LEGACY_BACKEND
     void                genEmitHelperCall   (unsigned       helper,
                                              int            argSize,
-                                             emitAttr       retSize,
+                                             emitAttr       retSize, 
                                              regNumber      callTarget = REG_NA);
 #else
     void                genEmitHelperCall   (unsigned       helper,
@@ -464,7 +464,10 @@ protected:
                                     INDEBUG_LDISASM_COMMA(CORINFO_SIG_INFO* sigInfo)
                                     void*                 addr
                                     X86_ARG(ssize_t       argSize),
-                                    emitAttr              retSize,
+                                    emitAttr              retSize// Lubo, 
+// Lubo
+                                    FEATURE_UNIX_AMD64_STRUCT_PASSING_ONLY_ARG(emitAttr retSize1),
+// Lubo end
                                     IL_OFFSETX            ilOffset,
                                     regNumber             base   = REG_NA,
                                     bool                  isJump = false,
@@ -475,7 +478,10 @@ protected:
                                     INDEBUG_LDISASM_COMMA(CORINFO_SIG_INFO* sigInfo)
                                     GenTreeIndir*         indir
                                     X86_ARG(ssize_t       argSize),
-                                    emitAttr              retSize,
+                                    emitAttr              retSize// Lubo, 
+// Lubo
+                                    FEATURE_UNIX_AMD64_STRUCT_PASSING_ONLY_ARG(emitAttr retSize1),
+// Lubo end
                                     IL_OFFSETX            ilOffset);
 
 
@@ -929,7 +935,11 @@ public :
 
     void                instEmit_indCall(GenTreePtr     call,
                                          size_t         argSize,
-                                         emitAttr       retSize);
+                                         emitAttr       retSize
+        // Lubo
+        FEATURE_UNIX_AMD64_STRUCT_PASSING_ONLY_ARG(emitAttr retSize1)
+        // Lubo end
+        );
 
     void                instEmit_RM     (instruction    ins,
                                          GenTreePtr     tree,

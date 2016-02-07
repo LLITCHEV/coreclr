@@ -1202,13 +1202,18 @@ protected:
         ssize_t         idacAmdVal;
     };
 
-    struct          instrDescCGCA  : instrDesc      // call with ...
+    struct          instrDescCGCA : instrDesc      // call with ...
     {
         VARSET_TP       idcGCvars;                 // ... updated GC vars or
         ssize_t         idcDisp;                   // ... big addrmode disp
         regMaskTP       idcGcrefRegs;              // ... gcref registers
         regMaskTP       idcByrefRegs;              // ... byref registers
         unsigned        idcArgCnt;                 // ... lots of args or (<0 ==> caller pops args)
+// Lubo
+#ifdef FEATURE_UNIX_AMD64_STRUCT_PASSING_ONLY
+        GCtype          idSecondRetRegGCType;
+#endif // FEATURE_UNIX_AMD64_STRUCT_PASSING_ONLY
+// Lubo end
     };
 
     struct          instrDescArmFP : instrDesc  

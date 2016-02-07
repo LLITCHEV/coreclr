@@ -5319,7 +5319,10 @@ void                emitter::emitIns_Call(EmitCallType  callType,
                                           INDEBUG_LDISASM_COMMA(CORINFO_SIG_INFO* sigInfo)     // used to report call sites to the EE
                                           void*         addr,
                                           ssize_t       argSize,
-                                          emitAttr      retSize,
+                                          emitAttr      retSize// Lubo, 
+// Lubo
+                                                   FEATURE_UNIX_AMD64_STRUCT_PASSING_ONLY_ARG(emitAttr retSize1),
+    // Lubo end 
                                           VARSET_VALARG_TP ptrVars,
                                           regMaskTP     gcrefRegs,
                                           regMaskTP     byrefRegs,
@@ -5513,7 +5516,11 @@ void                emitter::emitIns_Call(EmitCallType  callType,
                callType == EC_INDIR_SR     || callType == EC_INDIR_C ||
                callType == EC_INDIR_ARD);
 
-        id  = emitNewInstrCallInd(argCnt, disp, ptrVars, gcrefRegs, byrefRegs, retSize);
+        id  = emitNewInstrCallInd(argCnt, disp, ptrVars, gcrefRegs, byrefRegs, retSize 
+// Lubo
+                                                   FEATURE_UNIX_AMD64_STRUCT_PASSING_ONLY_ARG(retSize1)
+        // Lubo end
+            );
     }
     else
     {
@@ -5523,7 +5530,10 @@ void                emitter::emitIns_Call(EmitCallType  callType,
         assert(callType == EC_FUNC_TOKEN || callType == EC_FUNC_TOKEN_INDIR ||
                callType == EC_FUNC_ADDR);
 
-        id  = emitNewInstrCallDir(argCnt, ptrVars, gcrefRegs, byrefRegs, retSize);
+        id  = emitNewInstrCallDir(argCnt, ptrVars, gcrefRegs, byrefRegs, retSize// Lubo
+                                                   FEATURE_UNIX_AMD64_STRUCT_PASSING_ONLY_ARG(retSize1)
+        // Lubo end
+        );
     }
 
     /* Update the emitter's live GC ref sets */
@@ -10518,7 +10528,7 @@ size_t              emitter::emitOutputInstr(insGroup* ig, instrDesc* id, BYTE**
         }
 #endif
 
-    DONE_CALL:
+    DONE_CALL: // Lubo1
 
         /* We update the GC info before the call as the variables cannot be
            used by the call. Killing variables before the call helps with
@@ -10532,13 +10542,31 @@ size_t              emitter::emitOutputInstr(insGroup* ig, instrDesc* id, BYTE**
 
         // If the method returns a GC ref, mark EAX appropriately
         if (id->idGCref() == GCT_GCREF)
-            gcrefRegs |= RBM_EAX;
+            gcrefRegs |= RBM_EAX; // Lubo 
         else if  (id->idGCref() == GCT_BYREF)
-            byrefRegs |= RBM_EAX;
+            byrefRegs |= RBM_EAX; // Lubo 
+
+        // Lubo
+#ifdef FEATURE_UNIX_AMD64_STRUCT_PASSING
+        // If the method is a multi register return, mark RDX appropriately (for Sstem V AMD64).
+        if (id->idIsLargeCall())
+        {
+            instrDescCGCA* idCall = (instrDescCGCA*)id;
+            if (idCall->idSecondRetRegGCType == GCT_GCREF)
+            {
+                gcrefRegs |= RBM_RDX; // Lubo 
+            }
+            else if (idCall->idGCref() == GCT_BYREF)
+            {
+                byrefRegs |= RBM_RDX; // Lubo 
+            }
+        }
+#endif // FEATURE_UNIX_AMD64_STRUCT_PASSING
+        // Lubo end
 
         // If the GC register set has changed, report the new set
         if (gcrefRegs != emitThisGCrefRegs)
-            emitUpdateLiveGCregs(GCT_GCREF, gcrefRegs, dst);
+            emitUpdateLiveGCregs(GCT_GCREF, gcrefRegs, dst); // Lubo 
 
         if (byrefRegs != emitThisByrefRegs)
             emitUpdateLiveGCregs(GCT_BYREF, byrefRegs, dst);
