@@ -5314,22 +5314,22 @@ void                emitter::emitIns_J(instruction   ins,
  *
  */
 
-void                emitter::emitIns_Call(EmitCallType  callType,
-                                          CORINFO_METHOD_HANDLE methHnd,
-                                          INDEBUG_LDISASM_COMMA(CORINFO_SIG_INFO* sigInfo)     // used to report call sites to the EE
-                                          void*         addr,
-                                          ssize_t       argSize,
-                                          emitAttr      retSize,
-                                          VARSET_VALARG_TP ptrVars,
-                                          regMaskTP     gcrefRegs,
-                                          regMaskTP     byrefRegs,
-                                          IL_OFFSETX    ilOffset /* = BAD_IL_OFFSET */,
-                                          regNumber     ireg    /* = REG_NA */,
-                                          regNumber     xreg    /* = REG_NA */,
-                                          unsigned      xmul    /* = 0     */,
-                                          ssize_t       disp    /* = 0     */,
-                                          bool          isJump  /* = false */,
-                                          bool          isNoGC  /* = false */)
+void                emitter::emitIns_Call(EmitCallType                              callType,
+                                          CORINFO_METHOD_HANDLE                     methHnd,
+                                          INDEBUG_LDISASM_COMMA(CORINFO_SIG_INFO*   sigInfo)  // used to report call sites to the EE
+                                          void*                                     addr,
+                                          ssize_t                                   argSize,
+                                          ReturnRegisterTypes                       callReturnTypes,
+                                          VARSET_VALARG_TP                          ptrVars,
+                                          regMaskTP                                 gcrefRegs,
+                                          regMaskTP                                 byrefRegs,
+                                          IL_OFFSETX                                ilOffset, // = BAD_IL_OFFSET
+                                          regNumber                                 ireg,     // = REG_NA
+                                          regNumber                                 xreg,     // = REG_NA
+                                          unsigned                                  xmul,     // = 0
+                                          ssize_t                                   disp,     // = 0
+                                          bool                                      isJump,   // = false
+                                          bool                                      isNoGC)   // = false
 {
     /* Sanity check the arguments depending on callType */
 
@@ -5513,17 +5513,27 @@ void                emitter::emitIns_Call(EmitCallType  callType,
                callType == EC_INDIR_SR     || callType == EC_INDIR_C ||
                callType == EC_INDIR_ARD);
 
-        id  = emitNewInstrCallInd(argCnt, disp, ptrVars, gcrefRegs, byrefRegs, retSize);
+        id  = emitNewInstrCallInd(argCnt, 
+                                  disp, 
+                                  ptrVars, 
+                                  gcrefRegs, 
+                                  byrefRegs, 
+                                  callReturnTypes);
     }
     else
     {
-        /* Helper/static/nonvirtual/function calls (direct or through handle),
-           and calls to an absolute addr. */
+        // Helper/static/nonvirtual/function calls (direct or through handle),
+        // and calls to an absolute addr.
 
-        assert(callType == EC_FUNC_TOKEN || callType == EC_FUNC_TOKEN_INDIR ||
+        assert(callType == EC_FUNC_TOKEN || 
+               callType == EC_FUNC_TOKEN_INDIR ||
                callType == EC_FUNC_ADDR);
 
-        id  = emitNewInstrCallDir(argCnt, ptrVars, gcrefRegs, byrefRegs, retSize);
+        id  = emitNewInstrCallDir(argCnt, 
+                                  ptrVars, 
+                                  gcrefRegs, 
+                                  byrefRegs,
+                                  callReturnTypes);
     }
 
     /* Update the emitter's live GC ref sets */
@@ -10532,9 +10542,29 @@ size_t              emitter::emitOutputInstr(insGroup* ig, instrDesc* id, BYTE**
 
         // If the method returns a GC ref, mark EAX appropriately
         if (id->idGCref() == GCT_GCREF)
+        {
             gcrefRegs |= RBM_EAX;
-        else if  (id->idGCref() == GCT_BYREF)
+        }
+        else if (id->idGCref() == GCT_BYREF)
+        {
             byrefRegs |= RBM_EAX;
+        }
+
+#ifdef FEATURE_MULTIREG_RET
+        // If is a multi-register return method is called, mark RDX appropriately (for System V AMD64).
+        if (id->idIsLargeCall())
+        {
+            instrDescCGCA* idCall = (instrDescCGCA*)id;
+            if (idCall->idSecondGCref() == GCT_GCREF)
+            {
+                gcrefRegs |= RBM_RDX;
+            }
+            else if (idCall->idSecondGCref() == GCT_BYREF)
+            {
+                byrefRegs |= RBM_RDX;
+            }
+        }
+#endif // FEATURE_MULTIREG_RET
 
         // If the GC register set has changed, report the new set
         if (gcrefRegs != emitThisGCrefRegs)

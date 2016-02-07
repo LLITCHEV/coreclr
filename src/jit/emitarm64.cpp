@@ -6694,23 +6694,23 @@ void                emitter::emitIns_J(instruction   ins,
  *  Please consult the "debugger team notification" comment in genFnProlog().
  */
 
-void                emitter::emitIns_Call(EmitCallType  callType,
-                                          CORINFO_METHOD_HANDLE methHnd,
-                                          INDEBUG_LDISASM_COMMA(CORINFO_SIG_INFO* sigInfo)     // used to report call sites to the EE
-                                          void*         addr,
-                                          ssize_t       argSize,
-                                          emitAttr      retSize,
-                                          VARSET_VALARG_TP ptrVars,
-                                          regMaskTP     gcrefRegs,
-                                          regMaskTP     byrefRegs,
-                                          IL_OFFSETX    ilOffset   /* = BAD_IL_OFFSET */,
-                                          regNumber     ireg    /* = REG_NA */,
-                                          regNumber     xreg    /* = REG_NA */,
-                                          unsigned      xmul    /* = 0     */,
-                                          ssize_t       disp    /* = 0     */,
-                                          bool          isJump  /* = false */,
-                                          bool          isNoGC  /* = false */,
-                                          bool          isProfLeaveCB /* = false */)
+void                emitter::emitIns_Call(EmitCallType                              callType,
+                                          CORINFO_METHOD_HANDLE                     methHnd,
+                                          INDEBUG_LDISASM_COMMA(CORINFO_SIG_INFO*   sigInfo) // used to report call sites to the EE
+                                          void*                                     addr,
+                                          ssize_t                                   argSize,
+                                          ReturnRegisterTypes                       callReturnTypes,
+                                          VARSET_VALARG_TP                          ptrVars,
+                                          regMaskTP                                 gcrefRegs,
+                                          regMaskTP                                 byrefRegs,
+                                          IL_OFFSETX                                ilOffset,        // = BAD_IL_OFFSET
+                                          regNumber                                 ireg,            // = REG_NA
+                                          regNumber                                 xreg,            // = REG_NA
+                                          unsigned                                  xmul,            // = 0
+                                          ssize_t                                   disp,            // = 0
+                                          bool                                      isJump,          // = false
+                                          bool                                      isNoGC,          // = false
+                                          bool                                      isProfLeaveCB)   // = false
 {
     /* Sanity check the arguments depending on callType */
 
@@ -6801,7 +6801,7 @@ void                emitter::emitIns_Call(EmitCallType  callType,
 
         assert(callType == EC_INDIR_R);
 
-        id  = emitNewInstrCallInd(argCnt, disp, ptrVars, gcrefRegs, byrefRegs, retSize);
+        id  = emitNewInstrCallInd(argCnt, disp, ptrVars, gcrefRegs, byrefRegs, callReturnTypes);
     }
     else
     {
@@ -6811,7 +6811,7 @@ void                emitter::emitIns_Call(EmitCallType  callType,
         assert(callType == EC_FUNC_TOKEN ||
                callType == EC_FUNC_ADDR);
 
-        id  = emitNewInstrCallDir(argCnt, ptrVars, gcrefRegs, byrefRegs, retSize);
+        id  = emitNewInstrCallDir(argCnt, ptrVars, gcrefRegs, byrefRegs, callReturnTypes);
     }
 
     /* Update the emitter's live GC ref sets */

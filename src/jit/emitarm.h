@@ -84,18 +84,18 @@ private:
     instrDesc      *emitNewInstrAmd     (emitAttr attr, int dsp);
     instrDesc      *emitNewInstrAmdCns  (emitAttr attr, int dsp, int cns);
 
-    instrDesc      *emitNewInstrCallDir (int        argCnt,
-                                         VARSET_VALARG_TP GCvars,
-                                         regMaskTP  gcrefRegs,
-                                         regMaskTP  byrefRegs,
-                                         emitAttr   retSize);
+    instrDesc      *emitNewInstrCallDir (int                    argCnt,
+                                         VARSET_VALARG_TP       GCvars,
+                                         regMaskTP              gcrefRegs,
+                                         regMaskTP              byrefRegs,
+                                         ReturnRegisterTypes    callReturnTypes);
 
-    instrDesc      *emitNewInstrCallInd( int        argCnt,
-                                         ssize_t    disp,
-                                         VARSET_VALARG_TP GCvars,
-                                         regMaskTP  gcrefRegs,
-                                         regMaskTP  byrefRegs,
-                                         emitAttr   retSize);
+    instrDesc      *emitNewInstrCallInd( int                    argCnt,
+                                         ssize_t                disp,
+                                         VARSET_VALARG_TP       GCvars,
+                                         regMaskTP              gcrefRegs,
+                                         regMaskTP              byrefRegs,
+                                         ReturnRegisterTypes    callReturnTypes);
 
     void            emitGetInsCns   (instrDesc *id, CnsVal *cv);
     int             emitGetInsAmdCns(instrDesc *id, CnsVal *cv);
@@ -425,23 +425,23 @@ public:
         EC_COUNT
     };
 
-    void            emitIns_Call   (EmitCallType    callType,
-                                    CORINFO_METHOD_HANDLE methHnd,                       // used for pretty printing
-                                    INDEBUG_LDISASM_COMMA(CORINFO_SIG_INFO* sigInfo)     // used to report call sites to the EE
-                                    void*           addr,
-                                    ssize_t         argSize,
-                                    emitAttr        retSize,
-                                    VARSET_VALARG_TP ptrVars,
-                                    regMaskTP       gcrefRegs,
-                                    regMaskTP       byrefRegs,
-                                    IL_OFFSETX      ilOffset = BAD_IL_OFFSET,
-                                    regNumber       ireg = REG_NA,
-                                    regNumber       xreg = REG_NA,                                    
-                                    unsigned        xmul = 0,
-                                    int             disp = 0,
-                                    bool            isJump = false,
-                                    bool            isNoGC = false,
-                                    bool            isProfLeaveCB = false);
+    void            emitIns_Call   (EmitCallType                            callType,
+                                    CORINFO_METHOD_HANDLE                   methHnd,                   // used for pretty printing
+                                    INDEBUG_LDISASM_COMMA(CORINFO_SIG_INFO* sigInfo) // used to report call sites to the EE
+                                    void*                                   addr,
+                                    ssize_t                                 argSize,
+                                    ReturnRegisterTypes                     callReturnTypes,
+                                    VARSET_VALARG_TP                        ptrVars,
+                                    regMaskTP                               gcrefRegs,
+                                    regMaskTP                               byrefRegs,
+                                    IL_OFFSETX                              ilOffset = BAD_IL_OFFSET,
+                                    regNumber                               ireg = REG_NA,
+                                    regNumber                               xreg = REG_NA,
+                                    unsigned                                xmul = 0,
+                                    int                                     disp = 0,
+                                    bool                                    isJump = false,
+                                    bool                                    isNoGC = false,
+                                    bool                                    isProfLeaveCB = false);
 
 /*****************************************************************************
  *
