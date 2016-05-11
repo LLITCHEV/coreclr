@@ -298,18 +298,24 @@ JIT/Methodical/varargs/callconv/gc_ctor_il_r/gc_ctor_il_r.sh
 JIT/Methodical/varargs/callconv/val_ctor_il_d/val_ctor_il_d.sh
 JIT/Methodical/varargs/callconv/val_ctor_il_r/val_ctor_il_r.sh
 JIT/Methodical/varargs/misc/Dev10_615402/Dev10_615402.sh
+<<<<<<< HEAD
 JIT/Methodical/varargs/seh/fault_il_d/fault_il_d.sh
 JIT/Methodical/varargs/seh/fault_il_r/fault_il_r.sh
 JIT/Methodical/varargs/seh/filter_il_d/filter_il_d.sh
 JIT/Methodical/varargs/seh/filter_il_r/filter_il_r.sh
+=======
+>>>>>>> Handle tail calls with following GT_NOPS ane GT_RETURN.
 JIT/opt/Inline/tests/security/security.sh
 JIT/opt/Inline/tests/xmodb/xmodb.sh
 JIT/Regression/clr-x64-JIT/v2.1/b173569/b173569/b173569.sh
 JIT/Regression/clr-x64-JIT/v4.0/devdiv374539/DevDiv_374539/DevDiv_374539.sh
 JIT/Regression/CLR-x86-EJIT/V1-M12-Beta2/b26323/b26323/b26323.sh
 JIT/Regression/CLR-x86-JIT/V1-M09.5-PDC/b16423/b16423/b16423.sh
+<<<<<<< HEAD
 JIT/Regression/CLR-x86-JIT/V1-M09.5-PDC/b26324/b26324a/b26324a.sh
 JIT/Regression/CLR-x86-JIT/V1-M09.5-PDC/b26324/b26324b/b26324b.sh
+=======
+>>>>>>> Handle tail calls with following GT_NOPS ane GT_RETURN.
 JIT/Regression/CLR-x86-JIT/V1-M09.5-PDC/b28901/b28901/b28901.sh
 JIT/Regression/CLR-x86-JIT/V1-M09.5-PDC/b30838/b30838/b30838.sh
 JIT/Regression/CLR-x86-JIT/V1-M09.5-PDC/b30864/b30864/b30864.sh

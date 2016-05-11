@@ -48,12 +48,39 @@ JIT/Methodical/Boxing/xlang/_relsin_il_cs/_relsin_il_cs.sh
 JIT/Methodical/Boxing/xlang/_relsin_il_il/_relsin_il_il.sh
 JIT/Methodical/eh/deadcode/badcodeafterfinally_d/badcodeafterfinally_d.sh
 JIT/Methodical/eh/deadcode/badcodeafterfinally_r/badcodeafterfinally_r.sh
+<<<<<<< HEAD
+=======
+JIT/Methodical/eh/interactions/cornucopia1_d/cornucopia1_d.sh
+JIT/Methodical/eh/interactions/cornucopia1_r/cornucopia1_r.sh
+JIT/Methodical/varargs/seh/fault_il_d/fault_il_d.sh
+JIT/Methodical/varargs/seh/fault_il_r/fault_il_r.sh
+JIT/Methodical/varargs/seh/filter_il_d/filter_il_d.sh
+JIT/Methodical/varargs/seh/filter_il_r/filter_il_r.sh
+>>>>>>> Handle tail calls with following GT_NOPS ane GT_RETURN.
 JIT/Methodical/xxobj/operand/_il_dbglocalloc/_il_dbglocalloc.sh
 JIT/Methodical/xxobj/operand/_il_rellocalloc/_il_rellocalloc.sh
 JIT/Regression/CLR-x86-EJIT/v1-m10/b07847/b07847/b07847.sh
 JIT/Regression/CLR-x86-JIT/V1.2-M01/b03689/b03689/b03689.sh
 JIT/Regression/CLR-x86-JIT/V1.2-M01/b08046/b08046/b08046.sh
+<<<<<<< HEAD
 JIT/Regression/Dev11/dev10_865840/dev10_865840/dev10_865840.sh
+=======
+JIT/Regression/CLR-x86-JIT/V1.2-M01/b08707/b08707/b08707.sh
+JIT/Regression/CLR-x86-JIT/V1-M09.5-PDC/b26324/b26324a/b26324a.sh
+JIT/Regression/CLR-x86-JIT/V1-M09.5-PDC/b26324/b26324b/b26324b.sh
+JIT/Regression/CLR-x86-JIT/V1-M09.5-PDC/b27098/b27098/b27098.sh
+JIT/Regression/CLR-x86-JIT/V1-M09.5-PDC/b28911/b28911/b28911.sh
+JIT/Regression/CLR-x86-JIT/V1-M12-Beta2/b28949/b28949b/b28949b.sh
+JIT/Regression/CLR-x86-JIT/V1-M12-Beta2/b47584/b47584/b47584.sh
+JIT/Regression/CLR-x86-JIT/V1-M12-Beta2/b51416/b51416/b51416.sh
+JIT/Regression/CLR-x86-JIT/V1-M12-Beta2/b56272/b56272/b56272.sh
+JIT/Regression/Dev11/dev10_865840/dev10_865840/dev10_865840.sh
+JIT/Regression/VS-ia64-JIT/V1.2-M01/b11959/b11959/b11959.sh
+JIT/Regression/VS-ia64-JIT/V1.2-M02/b16933/b16933/b16933.sh
+JIT/Regression/VS-ia64-JIT/V1.2-M02/b22545/b22545/b22545.sh
+JIT/Regression/VS-ia64-JIT/V1.2-M02/b22591/b22591/b22591.sh
+JIT/Regression/VS-ia64-JIT/V2.0-Beta2/b416776/b416776/b416776.sh
+>>>>>>> Handle tail calls with following GT_NOPS ane GT_RETURN.
 JIT/SIMD/Vector3Interop_r/Vector3Interop_r.sh
 JIT/SIMD/Vector3Interop_ro/Vector3Interop_ro.sh
 JIT/Methodical/Boxing/xlang/_dbgsin_cs_il/_dbgsin_cs_il.sh

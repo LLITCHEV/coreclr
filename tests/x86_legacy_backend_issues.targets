@@ -151,6 +151,12 @@
     <ExcludeList Include="$(XunitTestBinBase)\JIT\Directed\coverage\importer\Desktop\ldelemnullarr1_il_r\ldelemnullarr1_il_r.cmd">
       <Issue>needs triage</Issue>
     </ExcludeList>
+<<<<<<< HEAD
+=======
+    <ExcludeList Include="$(XunitTestBinBase)\JIT\Methodical\cctor\misc\threads3_il_r\threads3_il_r.cmd">
+      <Issue>needs triage</Issue>
+    </ExcludeList>
+>>>>>>> Handle tail calls with following GT_NOPS ane GT_RETURN.
     <ExcludeList Include="$(XunitTestBinBase)\JIT\Directed\coverage\importer\Desktop\bleref_il_r\bleref_il_r.cmd">
       <Issue>needs triage</Issue>
     </ExcludeList>
@@ -253,6 +259,12 @@
     <ExcludeList Include="$(XunitTestBinBase)\JIT\Directed\intrinsic\interlocked\rva_rvastatic3\rva_rvastatic3.cmd">
       <Issue>needs triage</Issue>
     </ExcludeList>
+<<<<<<< HEAD
+=======
+    <ExcludeList Include="$(XunitTestBinBase)\JIT\SIMD\CircleInConvex_r\CircleInConvex_r.cmd">
+      <Issue>needs triage</Issue>
+    </ExcludeList>
+>>>>>>> Handle tail calls with following GT_NOPS ane GT_RETURN.
     <ExcludeList Include="$(XunitTestBinBase)\JIT\Regression\VS-ia64-JIT\V2.0-Beta2\b410474\b410474\b410474.cmd Timed Out">
       <Issue>needs triage</Issue>
     </ExcludeList>
@@ -265,6 +277,12 @@
     <ExcludeList Include="$(XunitTestBinBase)\JIT\Methodical\Boxing\xlang\_odbgsin_cs_il\_odbgsin_cs_il.cmd">
       <Issue>needs triage</Issue>
     </ExcludeList>
+<<<<<<< HEAD
+=======
+    <ExcludeList Include="$(XunitTestBinBase)\JIT\Methodical\cctor\misc\tail_il_r\tail_il_r.cmd">
+      <Issue>needs triage</Issue>
+    </ExcludeList>
+>>>>>>> Handle tail calls with following GT_NOPS ane GT_RETURN.
     <ExcludeList Include="$(XunitTestBinBase)\JIT\Methodical\varargs\seh\filter_il_d\filter_il_d.cmd">
       <Issue>needs triage</Issue>
     </ExcludeList>
@@ -288,6 +306,9 @@
     </ExcludeList>
     <ExcludeList Include="$(XunitTestBinBase)\JIT\opt\perf\doublealign\Locals\Locals.cmd">
       <Issue>needs triage</Issue>
+    </ExcludeList>
+    <ExcludeList Include="$(XunitTestBinBase)\JIT\opt\Tailcall\TailcallVerifyWithPrefix\TailcallVerifyWithPrefix.cmd" >
+        <Issue>needs triage</Issue>
     </ExcludeList>
     <ExcludeList Include="$(XunitTestBinBase)\JIT\Methodical\delegate\_simpleoddpower_il_d\_simpleoddpower_il_d.cmd">
       <Issue>needs triage</Issue>

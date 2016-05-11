@@ -10689,9 +10689,10 @@ _CONV:
 
             lclTyp = genActualType(op1->gtType);
 
-            /* Does the value have any side effects? */
-
-            if  ((op1->gtFlags & GTF_SIDE_EFFECT) || opts.compDbgCode)
+            // Does the value have any side effects? 
+            // If the codegen is for debugging and the op1 is a LclVar no need to 
+            // create a comma node below.
+            if ((op1->gtFlags & GTF_SIDE_EFFECT) || (opts.compDbgCode && op1->OperGet() != GT_LCL_VAR))
             {
                 // Since we are throwing away the value, just normalize
                 // it to its address.  This is more efficient.
@@ -10722,7 +10723,7 @@ _CONV:
                 // If 'op1' is an expression, create an assignment node.
                 // Helps analyses (like CSE) to work fine.
 
-                if (op1->gtOper != GT_CALL)
+                if (op1->OperGet() != GT_CALL)
                 {
                     op1 = gtUnusedValNode(op1);
                 }

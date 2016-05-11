@@ -7115,20 +7115,38 @@ GenTreePtr          Compiler::fgMorphCall(GenTreeCall* call)
         }
         else if ((stmtExpr->gtOper == GT_ASG) && (fgMorphStmt->gtNext != nullptr))
         {
-            GenTreePtr nextStmtExpr = fgMorphStmt->gtNext->gtStmt.gtStmtExpr;
+            GenTreePtr nextMorphStmt = fgMorphStmt->gtNext;
+            GenTreePtr nextStmtExpr = nextMorphStmt->gtStmt.gtStmtExpr;
+            
+            // There could be any number of GT_NOP between the GT_ASG statment and the GT_RETURN.
+            while (nextStmtExpr != nullptr &&
+                   (nextStmtExpr->gtOper == GT_NO_OP || nextStmtExpr->gtOper == GT_NOP))
+            {
+                nextStmtExpr = nextMorphStmt->gtStmt.gtStmtExpr;
+                nextMorphStmt = nextMorphStmt->gtNext;
+            }
+
             noway_assert(nextStmtExpr->gtOper == GT_RETURN);
             // In this case we have an assignment of the result of the call, and then a return of the  result of the assignment.
             // This can occur if impSpillStackEnsure() has introduced an assignment to a temp.
             noway_assert(stmtExpr->gtGetOp1()->OperIsLocal() &&
                          nextStmtExpr->OperGet() == GT_RETURN &&
-                         nextStmtExpr->gtGetOp1() != nullptr &&
-                         nextStmtExpr->gtGetOp1()->OperIsLocal() &&
-                         stmtExpr->gtGetOp1()->AsLclVarCommon()->gtLclNum == nextStmtExpr->gtGetOp1()->AsLclVarCommon()->gtLclNum);
+                         (nextStmtExpr->gtGetOp1() == nullptr || // This is a case of "tail. call, Pop, Return TYP_VOID IL instructions. 
+                             (nextStmtExpr->gtGetOp1()->OperIsLocal() &&
+                              stmtExpr->gtGetOp1()->AsLclVarCommon()->gtLclNum == nextStmtExpr->gtGetOp1()->AsLclVarCommon()->gtLclNum)));
             deleteReturn = true;
         }
+ 
         if (deleteReturn)
         {
-            fgRemoveStmt(compCurBB, fgMorphStmt->gtNext);
+            GenTreePtr nextMorphStmt = fgMorphStmt->gtNext;
+            GenTreePtr morphStmtToRemove = nullptr;
+            while (nextMorphStmt != nullptr)
+            {
+                morphStmtToRemove = nextMorphStmt;
+                nextMorphStmt = morphStmtToRemove->gtNext;
+                fgRemoveStmt(compCurBB, morphStmtToRemove);
+            }
         }
 
         // For void calls, we would have created a GT_CALL in the stmt list.
